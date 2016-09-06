@@ -17,24 +17,28 @@ module Services
         products = ShopifyAPI::Product.find(:all)
         @variants = products.collect { |p| p.variants }
         @variants = @variants.flatten
-        @unkown_skus = @up_to_date = @errors = @updated = []
+        @unkown_skus = []
+        @up_to_date = []
+        @errors = []
+        @updated = []
       end
 
-      def update_product sku, new_qty
+      def update_product(sku, new_qty, full_ref)
         variante = find_by_sku(sku)
         if variante.present?
           if variante.inventory_quantity != new_qty
             variante.inventory_quantity = new_qty.to_i
             if variante.save!
-              @updated.push(sku)
+              puts "#{sku} #{full_ref}"
+              @updated.push(full_ref)
             else
-              @errors.push(sku)
+              @errors.push(full_ref)
             end
           else
-            @up_to_date.push(sku)
+            @up_to_date.push(full_ref)
           end
         else
-          @unkown_skus.push(sku)
+          @unkown_skus.push(full_ref)
         end
       end
 

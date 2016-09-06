@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Sincronizacion terminada</h1>
+    <% if @results[:updated].present? %>
+      <div>
+        <div>Los siguientes productos fueron actualizados</div>
+        <table>
+        <% @results[:updated].each do |p| %>
+          <tr><td><%= p %> </td></tr>
+        <% end %>
+        </table>
+      </div>
+      <hr>
+    <% end %>
+
+    <% if @results[:errors].present? %>
+      <div>
+        <div>Los siguientes productos NO fueron actualizados por errores en el sistema</div>
+        <table>
+        <% @results[:errors].each do |p| %>
+          <tr><td><%= p %> </td></tr>
+        <% end %>
+        </table>
+      </div>
+      <hr>
+    <% end %>
+
+
+    <% if @results[:unkown_skus].present? %>
+      <div>
+        <div>Los siguientes productos NO exiten en la tienda</div>
+        <table>
+        <% @results[:unkown_skus].each do |p| %>
+          <tr><td><%= p %> </td></tr>
+        <% end %>
+        </table>
+      </div>
+      <hr>
+    <% end %>
+
+    <% if @results[:up_to_date].present? %>
+      <div>
+        <div>Los siguientes productos no necesitan ser actualizados</div>
+        <table>
+        <% @results[:up_to_date].each do |p| %>
+          <tr><td><%= p %> </td></tr>
+        <% end %>
+        </table>
+      </div>
+    <% end %>
+  </body>
+</html>
