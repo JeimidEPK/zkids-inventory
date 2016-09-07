@@ -15,8 +15,12 @@ module Services
         }
         response = self.class.post('/ws_EPKServicios.asmx/getInventarioTiendaVirtualEPK', options)
         data = Hash.from_xml(response.body)
-        inventario = JSON.parse data["string"]
-        @products = inventario["InventarioTiendaVirtual"]
+        if data.present?
+          inventario = JSON.parse data["string"]
+          @products = inventario["InventarioTiendaVirtual"] || []
+        else
+          @products = []
+        end
       end
     end
   end

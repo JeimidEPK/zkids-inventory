@@ -6,6 +6,7 @@ module Services
       attr_accessor :up_to_date
       attr_accessor :errors
       attr_accessor :updated
+      attr_accessor :variants
 
       def initialize
         api_key = Figaro.env.s_api_key
@@ -29,7 +30,6 @@ module Services
           if variante.inventory_quantity != new_qty
             variante.inventory_quantity = new_qty.to_i
             if variante.save!
-              puts "#{sku} #{full_ref}"
               @updated.push(full_ref)
             else
               @errors.push(full_ref)
