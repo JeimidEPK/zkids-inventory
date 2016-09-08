@@ -26,6 +26,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.5'
   gem 'webmock', '~> 2.1'
+  gem 'fantaskspec', '~> 1.0'
 end
 
 group :development do
