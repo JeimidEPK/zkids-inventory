@@ -28,6 +28,10 @@ RSpec.describe "Services::Shopify::Sync" do
       it "should has updated" do
         expect(shop.updated).not_to be_nil
       end
+
+      it "should has out_of_track" do
+        expect(shop.out_of_track).not_to be_nil
+      end
     end
 
     context "methods" do
@@ -46,7 +50,7 @@ RSpec.describe "Services::Shopify::Sync" do
         context "the variant exist but does not need to be updated" do
           before(:each) do
             shop.variants = [
-              double("variant", :sku => "test", :inventory_quantity => 1)
+              double("variant", :sku => "test", :inventory_quantity => 1, :inventory_management => "shopify")
             ]
           end
 
@@ -58,7 +62,7 @@ RSpec.describe "Services::Shopify::Sync" do
 
         context "the variant exist and it needs to be updated" do
           before(:each) do
-            variant = double("variant", :sku => "test", :inventory_quantity => 1)
+            variant = double("variant", :sku => "test", :inventory_quantity => 1, :inventory_management => "shopify")
             allow(variant).to receive(:inventory_quantity=)
             allow(variant).to receive(:save!).and_return(true)
             shop.variants = [ variant ]
@@ -70,9 +74,21 @@ RSpec.describe "Services::Shopify::Sync" do
           end
         end
 
+        context "the variant exist, it needs to be updated but is not allowed to be updated" do
+          before(:each) do
+            variant = double("variant", :sku => "test", :inventory_quantity => 1, :inventory_management => "not")
+            shop.variants = [ variant ]
+          end
+
+          it "insert the sku in out_of_track array" do
+            shop.update_product "test", 9, "test2"
+            expect(shop.out_of_track).to contain_exactly("test2")
+          end
+        end
+
         context "the variant exist and it needs to be updated" do
           before(:each) do
-            variant = double("variant", :sku => "test", :inventory_quantity => 1)
+            variant = double("variant", :sku => "test", :inventory_quantity => 1, :inventory_management => "shopify")
             allow(variant).to receive(:inventory_quantity=)
             allow(variant).to receive(:save!).and_return(false)
             shop.variants = [ variant ]
@@ -83,7 +99,6 @@ RSpec.describe "Services::Shopify::Sync" do
             expect(shop.errors).to contain_exactly("test2")
           end
         end
-
       end
     end
   end

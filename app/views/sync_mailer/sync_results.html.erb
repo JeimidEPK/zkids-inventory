@@ -17,6 +17,18 @@
       <hr>
     <% end %>
 
+    <% if @results[:out_of_track].present? %>
+      <div>
+        <div>Los siguientes productos no tienen permiso para ser actualizados via API</div>
+        <table>
+        <% @results[:out_of_track].each do |p| %>
+          <tr><td><%= p %> </td></tr>
+        <% end %>
+        </table>
+      </div>
+      <hr>
+    <% end %>
+
     <% if @results[:errors].present? %>
       <div>
         <div>Los siguientes productos NO fueron actualizados por errores en el sistema</div>

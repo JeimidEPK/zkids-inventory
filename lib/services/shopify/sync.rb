@@ -7,6 +7,7 @@ module Services
       attr_accessor :errors
       attr_accessor :updated
       attr_accessor :variants
+      attr_accessor :out_of_track
 
       def initialize
         api_key = Figaro.env.s_api_key
@@ -22,20 +23,25 @@ module Services
         @up_to_date = []
         @errors = []
         @updated = []
+        @out_of_track = []
       end
 
       def update_product(sku, new_qty, full_ref)
         variante = find_by_sku(sku)
         if variante.present?
-          if variante.inventory_quantity != new_qty
-            variante.inventory_quantity = new_qty.to_i
-            if variante.save!
-              @updated.push(full_ref)
+          if variante.inventory_management.eql?("shopify")
+            if variante.inventory_quantity != new_qty
+              variante.inventory_quantity = new_qty.to_i
+              if variante.save!
+                @updated.push(full_ref)
+              else
+                @errors.push(full_ref)
+              end
             else
-              @errors.push(full_ref)
+              @up_to_date.push(full_ref)
             end
           else
-            @up_to_date.push(full_ref)
+            @out_of_track.push(full_ref)
           end
         else
           @unkown_skus.push(full_ref)
@@ -49,4 +55,3 @@ module Services
     end
   end
 end
-
