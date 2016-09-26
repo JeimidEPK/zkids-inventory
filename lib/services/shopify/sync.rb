@@ -26,25 +26,25 @@ module Services
         @out_of_track = []
       end
 
-      def update_product(sku, new_qty, full_ref)
+      def update_product(sku, new_qty)
         variante = find_by_sku(sku)
         if variante.present?
           if variante.inventory_management.eql?("shopify")
             if variante.inventory_quantity != new_qty
               variante.inventory_quantity = new_qty.to_i
               if variante.save!
-                @updated.push(full_ref)
+                @updated.push(sku)
               else
-                @errors.push(full_ref)
+                @errors.push(sku)
               end
             else
-              @up_to_date.push(full_ref)
+              @up_to_date.push(sku)
             end
           else
-            @out_of_track.push(full_ref)
+            @out_of_track.push(sku)
           end
         else
-          @unkown_skus.push(full_ref)
+          @unkown_skus.push(sku)
         end
       end
 
