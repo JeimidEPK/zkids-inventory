@@ -20,7 +20,7 @@ module Services
         pages = (total_productos / 250) + (total_productos % 250 > 0 ? 1 : 0)
         products = []
         pages.times do |page|
-          products.concat ShopifyAPI::Product.find(:all, :params => {limit: 250, page: page})
+          products.concat ShopifyAPI::Product.find(:all, :params => {limit: 250, page: page+1})
         end
         @variants = products.collect { |p| p.variants }
         @variants = @variants.flatten
