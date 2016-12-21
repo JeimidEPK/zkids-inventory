@@ -8,7 +8,7 @@ namespace :products_sync do
     epk.products.each do |p|
       sku = p["Articulo"]
       cantidad = Integer(p["Cantidad"])
-      updated_q = cantidad > 0 ? cantidad - 1 : cantidad
+      updated_q = cantidad >= 2 ? cantidad - 2 : cantidad
       shopify.update_product(sku, updated_q)
     end
     results = {
