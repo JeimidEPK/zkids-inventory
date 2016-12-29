@@ -4,11 +4,12 @@ namespace :products_sync do
 
     shopify = Services::Shopify::Sync.new
     epk = Services::Epk::Sync.new
+    stock_discount = Figaro.env.i_stock_discount.to_i
 
     epk.products.each do |p|
       sku = p["Articulo"]
       cantidad = Integer(p["Cantidad"])
-      updated_q = cantidad > 2 ? cantidad - 2 : 0
+      updated_q = cantidad > stock_discount ? cantidad - stock_discount : 0
       shopify.update_product(sku, updated_q)
     end
     results = {
