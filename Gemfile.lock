@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/Rykian/clockwork.git
+  revision: 5a42e1397d835e484d2210bc3c2e23bdfe2b21bb
+  specs:
+    clockwork (2.0.1)
+      activesupport
+      tzinfo
+
+GIT
   remote: git://github.com/rails/activeresource.git
   revision: f8abaf13174e94d179227f352c9dd6fb8b03e0da
   specs:
@@ -178,6 +186,7 @@ PLATFORMS
 DEPENDENCIES
   activeresource!
   byebug
+  clockwork!
   fantaskspec (~> 1.0)
   figaro (~> 1.1, >= 1.1.1)
   httparty (~> 0.14.0)
