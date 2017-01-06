@@ -38,14 +38,14 @@ module Services
             if variante.inventory_quantity != new_qty
               variante.inventory_quantity = new_qty.to_i
               if variante.save!
-                puts "updated #{sku}"
+                puts "updated #{sku}: #{new_qty}"
                 @updated.push(sku)
               else
                 puts "error #{sku}"
                 @errors.push(sku)
               end
             else
-              puts "up to date #{sku}"
+              puts "up to date #{sku}: #{new_qty}"
               @up_to_date.push(sku)
             end
           else

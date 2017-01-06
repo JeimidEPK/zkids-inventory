@@ -6,6 +6,7 @@ namespace :products_sync do
     epk = Services::Epk::Sync.new
     stock_discount = Figaro.env.i_stock_discount.to_i
 
+    # puts epk.products
     epk.products.each do |p|
       sku = p["Articulo"]
       cantidad = Integer(p["Cantidad"])
