@@ -2,11 +2,11 @@ namespace :products_sync do
   desc "Inicia la Sincronizaion de productos de EPK con Shopify"
   task start: :environment do
 
-    shopify = Services::Shopify::Sync.new
     epk = Services::Epk::Sync.new
+    # puts epk.products
+    shopify = Services::Shopify::Sync.new
     stock_discount = Figaro.env.i_stock_discount.to_i
 
-    # puts epk.products
     epk.products.each do |p|
       sku = p["Articulo"]
       cantidad = Integer(p["Cantidad"])
